@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class tests {
 
-    //loudmouth em quase todos
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
@@ -15,7 +14,7 @@ public class tests {
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        End e= new End();
+        End e = new End();
     }
 
     @BeforeEach
@@ -29,35 +28,42 @@ public class tests {
 
     //nitpicker
     @Test
-    void createQrCode(){
+    void createQrCode() {
 
-        API_QR_Code_Stub api_qr_code_stub= new API_QR_Code_Stub();
-        assertEquals("https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=",api_qr_code_stub.getPath());
-        assertEquals(1,api_qr_code_stub.getId());
-        assertEquals(1,API_QR_Code_Stub.getQr_code_count());
-        assertEquals(1,API_QR_Code_Stub.getQr_codes().size());
+        API_QR_Code_Stub api_qr_code_stub = new API_QR_Code_Stub();
+        api_qr_code_stub.setPath("ola;12");
+        assertEquals("https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl="+api_qr_code_stub.getId()+";ola;12", api_qr_code_stub.getPath());
+
+
     }
 
 
     //happypath
 
     @Test
-    void createLivro(){
+    void createLivro() {
 
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-        assertEquals(1,livro.getId());
+    Livro.setIsbn_count(0);
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
+
+       assertEquals(0, livro.getIsbn());
+
+
+        Livro livro1 = new Livro("Pedro", "UnitAnti-Patterns");
+
+        assertEquals(1, livro1.getIsbn());
 
     }
 
     @Test
-    void createPessoa(){
+    void createPessoa() {
 
-        Pessoa p1 = new Pessoa("Nelson","nelson.andrade98@gmail.com","IPV","938249102");
-        assertEquals(p1.getName(),"Nelson");
+        Pessoa p1 = new Pessoa("Nelson", "nelson.andrade98@gmail.com", "IPV", "938249102");
+        assertEquals(p1.getName(), "Nelson");
     }
 
     @Test
-    void CreateBiblioteca(){
+    void CreateBiblioteca() {
 
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
         assertEquals("BibliotecaMunicipal", biblioteca.getNome());
@@ -66,298 +72,217 @@ public class tests {
     //happypath
     //excessive setup
     @Test
-    void createRequisicao(){
+    void createRequisicao() {
 
-        /*
-        Pessoa p1=new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com","Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-        RequisitaLivro requisitaLivro= new RequisitaLivro(1,"29/04/2020 15:54", livro, p1);
 
-        assertEquals(1,requisitaLivro.getId());
+        RequisitaLivro.setId_count(1);
+        Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
+        RequisitaLivro requisitaLivro = new RequisitaLivro(livro, p1);
 
-        */
+        assertEquals(1, requisitaLivro.getId());
+
+
+    }
+
+
+    @Test
+    void addLivroBiblioteca() {
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Pessoa p1=new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com","Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
+        assertEquals(0, biblioteca.getLivros().size());
 
         biblioteca.addLivro(livro);
-        RequisitaLivro requisitaLivro= new RequisitaLivro(1,"29/04/2020 15:54", livro, p1);
-
-        assertEquals(1,requisitaLivro.getId());
-
-    }
-
-    @Test
-    void criaRepositorioRequisicoes(){
-
-        LivrosEmprestados livrosEmprestados= new LivrosEmprestados();
-        assertEquals(2,livrosEmprestados.getTeste());
-    }
-
-
-    @Test
-    void addLivroBiblioteca(){
-        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-        assertEquals(0,biblioteca.getLivros().size());
-
-        biblioteca.addLivro(livro);
-        assertEquals(1,biblioteca.getLivros().size());
+        assertEquals(1, biblioteca.getLivros().size());
 
 
     }
 
 
-    //Generous Leftovers
     @Test
-    void criaQrCodeLivro() throws BookNotFoundException {
+    void criaQrCodeLivro() {
 
         //os metodos anteriores acedem ao count static
-        //API_QR_Code_Stub.setQr_code_count(0);
+        API_QR_Code_Stub.setQr_code_count(0);
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
-        assertEquals(0,API_QR_Code_Stub.getQr_code_count());
+        assertEquals(0, API_QR_Code_Stub.getQr_code_count());
         biblioteca.addLivro(livro);
 
 
-
-        assertEquals(1,API_QR_Code_Stub.getQr_code_count());
+        assertEquals(1, API_QR_Code_Stub.getQr_code_count());
 
         biblioteca.removeLivro(livro);
         biblioteca.addLivro(livro);
 
 
+        assertEquals(2, API_QR_Code_Stub.getQr_code_count());
 
-        assertEquals(2,API_QR_Code_Stub.getQr_code_count());
-
-        String aux= API_QR_Code_Stub.getQr_codes().get(0);
-        String aux2= API_QR_Code_Stub.getQr_codes().get(1);
-        assertNotEquals(aux,aux2);
+        String aux = API_QR_Code_Stub.getQr_codes().get(0);
+        String aux2 = API_QR_Code_Stub.getQr_codes().get(1);
+        assertNotEquals(aux, aux2);
 
 
     }
 
     @Test
-    void removeLivroBiblioteca() throws BookNotFoundException {
+    void removeLivroBiblioteca() {
 
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
 
         biblioteca.addLivro(livro);
-        assertEquals(1,biblioteca.getLivros().size());
+        assertEquals(1, biblioteca.getLivros().size());
 
         biblioteca.removeLivro(livro);
-        assertEquals(0,biblioteca.getLivros().size());
+        assertEquals(0, biblioteca.getLivros().size());
     }
 
     @Test
-    void ContemLivros(){
+    void ContemLivros() {
 
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
 
         biblioteca.addLivro(livro);
-        assertEquals("UnitAnti-Patterns",biblioteca.getLivros().get(0).getTitulo());
+        assertEquals("UnitAnti-Patterns", biblioteca.getLivros().get(0).getTitulo());
     }
 
-//the liar
+    //the liar
     @Test
-    void guardaRegistoRequisicao(){
-
-        LivrosEmprestados livrosEmprestados= new LivrosEmprestados();
-        Pessoa p1=new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com","Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+    void guardaRegistoRequisicao() {
 
 
+        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
+        Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
-            RequisitaLivro requisitaLivro= new RequisitaLivro(1,"29/04/2020 15:54", livro, p1);
 
-         //   assertEquals(0,livrosEmprestados.getLivrosEmprestados().size());
+        biblioteca.addLivro(livro);
+        RequisitaLivro requisitaLivro = new RequisitaLivro(livro, p1);
 
-            livrosEmprestados.addLivroEmprestado(requisitaLivro);
-          //  assertEquals(1,livrosEmprestados.getLivrosEmprestados().size());
-        }
+        assertEquals(0, biblioteca.getLivrosEmprestados().size());
+
+        biblioteca.addRequisicao(requisitaLivro);
+        assertEquals(1, biblioteca.getLivrosEmprestados().size());
+    }
 
     @Test
-    void removeRegistoRequisicao(){
-
-        LivrosEmprestados livrosEmprestados= new LivrosEmprestados();
-        Pessoa p1=new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com","Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+    void removeRegistoRequisicao() {
 
 
+        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
+        Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
-        RequisitaLivro requisitaLivro= new RequisitaLivro(1,"29/04/2020 15:54", livro, p1);
+
+        biblioteca.addLivro(livro);
+
+        RequisitaLivro requisitaLivro = new RequisitaLivro(livro, p1);
 
 
-        livrosEmprestados.addLivroEmprestado(requisitaLivro);
-        assertEquals(1,livrosEmprestados.getLivrosEmprestados().size());
+        biblioteca.addRequisicao(requisitaLivro);
+        assertEquals(1, biblioteca.getLivrosEmprestados().size());
+        biblioteca.removeRequisicao(livro, p1.getEmail());
 
-        livrosEmprestados.removeLivroEmprestado(livrosEmprestados.getLivrosEmprestados().get(0));
-        assertEquals(0,livrosEmprestados.getLivrosEmprestados().size());
+        assertEquals(0, biblioteca.getLivrosEmprestados().size());
     }
 
     //secret catcher
     @Test
-    void verificaSeLivroDisponivel(){
+    void verificaSeLivroDisponivel() {
         int aux = 0;
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-        biblioteca.addLivro(livro);
-        
-        try {
-             aux= biblioteca.requisitaLivro(livro);
-        } catch (BookNotFoundException e) {
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
-        }
 
-        assertEquals(1,aux);
+        aux = biblioteca.verificaExistenciaLivro(livro);
 
-    }
-
-    @Test
-    void requisitaLivro() throws BookNotFoundException {
-        int aux=0;
-        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        LivrosEmprestados livrosEmprestados= new LivrosEmprestados();
-        Pessoa p1=new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com","Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-
+        assertEquals(0, aux);
 
         biblioteca.addLivro(livro);
 
-        try {
-            aux= biblioteca.requisitaLivro(livro);
-        } catch (BookNotFoundException e) {
+        aux = biblioteca.verificaExistenciaLivro(livro);
 
-        }
-
-        if(aux==1){
-
-            RequisitaLivro requisitaLivro= new RequisitaLivro(1,"29/04/2020 15:54", livro, p1);
-
-            assertEquals(0,livrosEmprestados.getLivrosEmprestados().size());
-
-            livrosEmprestados.addLivroEmprestado(requisitaLivro);
-            assertEquals(1,livrosEmprestados.getLivrosEmprestados().size());
-        }
+        assertEquals(1, aux);
     }
 
-    //Enumerator
-//removeLivroQuandoRequisita
     @Test
-    void teste1() throws BookNotFoundException {
-int aux=0;
+    void requisitaLivro() {
+        int aux = 0;
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
         Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro = new Livro("Pedro", "UnitAnti-Patterns");
 
 
         biblioteca.addLivro(livro);
 
-        try {
-            aux= biblioteca.requisitaLivro(livro);
-        } catch (BookNotFoundException e) {
-
-        }
+        aux = biblioteca.verificaExistenciaLivro(livro);
 
         if (aux == 1) {
-
-            RequisitaLivro requisitaLivro = new RequisitaLivro(1, "29/04/2020 15:54", livro, p1);
-            livrosEmprestados.addLivroEmprestado(requisitaLivro);
-
-            assertEquals(1, biblioteca.getLivros().size());
-            biblioteca.removeLivro(livro);
-            assertEquals(0, biblioteca.getLivros().size());
-
-
+            biblioteca.addRequisicao(new RequisitaLivro(livro, p1));
+            assertEquals(livro.getId(), biblioteca.getLivrosEmprestados().get(0).getLivro().getId());
         }
+
+    else
+
+    {
+        assertEquals(0, biblioteca.getLivrosEmprestados().size());
+    }
+
+}
+
+
+    @Test
+    void removeLivroQuandoRequisita()  {
+
+        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
+        Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
+        Livro livro= new Livro("Pedro","UnitAnti-Patterns");
+
+
+        biblioteca.addLivro(livro);
+
+        assertEquals(1,biblioteca.getLivros().size());
+        assertEquals(0,biblioteca.getLivrosEmprestados().size());
+
+        biblioteca.addRequisicao(new RequisitaLivro(livro,p1));
+
+        assertEquals(0,biblioteca.getLivros().size());
+
+        assertEquals(1,biblioteca.getLivrosEmprestados().size());
     }
 
     //free rider
-//insereLivroBibliotecaRequisicao
+//
     @Test
-    void teste2() throws BookNotFoundException {
-        int aux=0;
+    void insereLivroBibliotecaRequisicao()  {
+
+
         Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
         Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
+        Livro livro= new Livro("Pedro","UnitAnti-Patterns");
 
 
-        biblioteca.addLivro(livro);
+            biblioteca.addLivro(livro);
 
 
-        try {
-            aux= biblioteca.requisitaLivro(livro);
-        } catch (BookNotFoundException e) {
+            assertEquals(1,biblioteca.getLivros().size());
 
-        }
-
-        if (aux == 1) {
-
-            RequisitaLivro requisitaLivro = new RequisitaLivro(1, "29/04/2020 15:54", livro, p1);
-            livrosEmprestados.addLivroEmprestado(requisitaLivro);
-
-
-            biblioteca.removeLivro(livro);
-
+            biblioteca.addRequisicao(new RequisitaLivro(livro,p1));
 
             assertEquals(0,biblioteca.getLivros().size());
-            biblioteca.addLivro(livrosEmprestados.getLivrosEmprestados().get(0).getLivro());
 
-            livrosEmprestados.removeLivroEmprestado(livrosEmprestados.getLivrosEmprestados().get(0));
+            biblioteca.removeRequisicao(livro,p1.getEmail());
+
             assertEquals(1,biblioteca.getLivros().size());
 
 
-            assertEquals(1,biblioteca.getLivros().get(0).getId());
-
-
-
-
-        }
-    }
-//devolveLivro
-    @Test
-    void teste3() throws BookNotFoundException {
-int aux=0;
-        Biblioteca biblioteca = new Biblioteca("BibliotecaMunicipal", "Viseu");
-        LivrosEmprestados livrosEmprestados = new LivrosEmprestados();
-        Pessoa p1 = new Pessoa("Nelson Andrade", "nelson.andrade98@gmail.com", "Nisa, Portalegre", "938249102");
-        Livro livro= new Livro(1,"Pedro","UnitAnti-Patterns");
-
-
-        biblioteca.addLivro(livro);
-
-
-        try {
-            aux= biblioteca.requisitaLivro(livro);
-        } catch (BookNotFoundException e) {
-
         }
 
-        if (aux == 1) {
-
-            RequisitaLivro requisitaLivro = new RequisitaLivro(1, "29/04/2020 15:54", livro, p1);
-            livrosEmprestados.addLivroEmprestado(requisitaLivro);
-
-
-            biblioteca.removeLivro(livro);
-
-
-         biblioteca.addLivro(livrosEmprestados.getLivrosEmprestados().get(0).getLivro());
-
-         livrosEmprestados.removeLivroEmprestado(livrosEmprestados.getLivrosEmprestados().get(0));
-
-         assertEquals(1,biblioteca.getLivros().get(0).getId());
-
-        }
-
-    }
 
 
 

@@ -9,7 +9,7 @@ public class Pessoa {
         this.email = email;
         this.morada = morada;
         this.telefone = telefone;
-        System.out.println("Pessoa " +name+ " criada");
+       // System.out.println("Pessoa " +name+ " criada");
     }
 
     public String getName() {
