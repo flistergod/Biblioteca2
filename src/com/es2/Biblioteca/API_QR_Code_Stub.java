@@ -28,7 +28,7 @@ public class API_QR_Code_Stub {
         //path: id_qrcode, id_livro, nome, autor, biblioteca
         //informacao dividida por ";"
         this.id=qr_codes.size()+1;
-        this.path= "https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl="+ this.id+";"+ path;
+        this.path= "https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl="+ qr_codes.size()+1+";"+ path;
         qr_code_count++;
         qr_codes.add(this.path);
     }
