@@ -1,34 +1,51 @@
 package com.es2.Biblioteca;
 
+import java.time.LocalDate;
+
 public class RequisitaLivro {
 
     int id;
-    String data_hora;
-    Livro livro;
-    Pessoa pessoa;
+    private LocalDate dateTime;
+   private Livro livro;
+   private Pessoa pessoa;
+   private static int id_count;
 
-    public RequisitaLivro(int id, String data_hora, Livro livro, Pessoa pessoa) {
-        this.id = id;
-        this.data_hora = data_hora;
+
+
+    public RequisitaLivro(Livro livro, Pessoa pessoa) {
+        this.id = id_count++;
+        this.dateTime=LocalDate.now();
         this.livro = livro;
         this.pessoa = pessoa;
-        System.out.println("Livro "+ livro.getId()+ " requisitado");
+
+        /*reviewer:
+        submitter: */
+       // System.out.println("Livro "+ livro.getId()+ " requisitado");
+    }
+
+    public static int getId_count() {
+        return id_count;
+    }
+
+    public static void setId_count(int id_count) {
+        RequisitaLivro.id_count = id_count;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId() {
+        this.id = id_count++;
     }
 
-    public String getData_hora() {
-        return data_hora;
+
+    public LocalDate getDateTime() {
+        return dateTime;
     }
 
-    public void setData_hora(String data_hora) {
-        this.data_hora = data_hora;
+    public void setDateTime(LocalDate dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Livro getLivro() {
