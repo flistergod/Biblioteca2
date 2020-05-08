@@ -1,0 +1,9 @@
+Trabalho Biblioteca utilizado para encontrar antiPatterns e corrigir estes através de pull requests e commits do github entre 2 equipas.
+Essas 2 equipas são os reviwer e submiter.
+
+Os reviwer corrigem o código (se necessário) dos submiter
+
+Somos 4 e as equipas são estas:
+
+reviwer: 16601 e 16075
+submiter: 16043 e 15256
